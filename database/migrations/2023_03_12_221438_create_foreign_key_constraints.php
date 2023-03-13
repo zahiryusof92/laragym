@@ -13,13 +13,6 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('subscriptions', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('package_id')->references('id')->on('packages');
-            $table->foreign('service_id')->references('id')->on('services');
-            $table->foreign('cycle_id')->references('id')->on('cycles');
-        });
-
         Schema::table('packages', function (Blueprint $table) {
             $table->foreign('service_id')->references('id')->on('services');
             $table->foreign('cycle_id')->references('id')->on('cycles');
@@ -27,6 +20,14 @@ return new class extends Migration
 
         Schema::table('activities', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users');
+        });
+
+        Schema::table('subscriptions', function (Blueprint $table) {
+            $table->foreign('package_id')->references('id')->on('packages');
+        });
+
+        Schema::table('subscription_items', function (Blueprint $table) {
+            $table->foreign('package_id')->references('id')->on('packages');
         });
     }
 
@@ -37,20 +38,21 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('subscriptions', function (Blueprint $table) {
-            $table->dropForeign('user_id');
-            $table->dropForeign('package_id');
+        Schema::table('packages', function (Blueprint $table) {
             $table->dropForeign('service_id');
             $table->dropForeign('cycle_id');
         });
 
-        Schema::table('packages', function (Blueprint $table) {
-            $table->dropForeign('package_id');
-            $table->dropForeign('service_id');
-        });
-
         Schema::table('activities', function (Blueprint $table) {
             $table->dropForeign('user_id');
+        });
+
+        Schema::table('subscriptions', function (Blueprint $table) {
+            $table->dropForeign('package_id');
+        });
+
+        Schema::table('subscription_items', function (Blueprint $table) {
+            $table->dropForeign('package_id');
         });
     }
 };
