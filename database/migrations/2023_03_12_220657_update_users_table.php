@@ -19,7 +19,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('status')->default(UserStatus::ACTIVE->value);
             $table->string('role')->default(UserRole::MEMBER->value);
-            $table->string('account_number')->unique();
+            $table->string('account_number')->nullable()->unique();
             $table->date('dob')->nullable();
             $table->string('address')->nullable();
             $table->string('avatar')->nullable();
